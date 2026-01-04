@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Details about hackathon event on BYAMN Hackathons platform">
+    <title>Hackathon Details | BYAMN Hackathons</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="back-link">← Back to Hackathons</a>
+            <h1 id="hackathonTitle">Hackathon Title</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hackathon-banner">
+            <img id="hackathonBanner" src="" alt="Hackathon banner" class="banner-image">
+        </section>
+
+        <section class="hackathon-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Organizer:</strong>
+                    <span id="hackathonOrganizer"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Team Size:</strong>
+                    <span id="hackathonTeamSize"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Mode:</strong>
+                    <span id="hackathonMode"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Deadline:</strong>
+                    <span id="hackathonDeadline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Prize Pool:</strong>
+                    <span id="hackathonPrize"></span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="registerButton" class="btn-primary" onclick="openRegistration()">Register Now</button>
+            </div>
+        </section>
+
+        <section class="hackathon-content">
+            <article class="content-section">
+                <h2>About</h2>
+                <div id="hackathonAbout"></div>
+            </article>
+
+            <article class="content-section">
+                <h2>Stages & Timeline</h2>
+                <div id="hackathonStages"></div>
+            </article>
+
+            <article class="content-section">
+                <h2>Rewards & Prizes</h2>
+                <div id="hackathonRewards"></div>
+            </article>
+
+            <article class="content-section">
+                <h2>Contact Information</h2>
+                <div id="hackathonContact"></div>
+            </article>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover upcoming hackathons on BYAMN Hackathons platform">
+    <title>BYAMN Hackathons</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>BYAMN Hackathons</h1>
+            <p>Discover and join the latest hackathon events</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hackathon-filters">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search hackathons...">
+            </div>
+            <div class="filter-tags">
+                <!-- Tags will be populated dynamically -->
+            </div>
+        </section>
+
+        <section class="hackathon-list" id="hackathonList">
+            <!-- Hackathon cards will be populated dynamically -->
+            <div class="loading">Loading hackathons...</div>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
