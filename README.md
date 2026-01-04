@@ -1,5 +1,4 @@
-```md
-# BYAMN Hackathon Section – Internship Task
+##BYAMN Hackathon Section – Internship Task
 
 This repository contains the frontend implementation for the **BYAMN Hackathon Section**.  
 The goal is to build a dynamic hackathon listing and detail system using **HTML, CSS, and JavaScript**, powered by **Google Sheets via API**.
@@ -23,11 +22,10 @@ This task represents a real-world production-style frontend feature.
 
 All hackathon data must be fetched from the following API:
 
-```
+
 
 [https://sheetdb.io/api/v1/wosxpgxr0u76m](https://sheetdb.io/api/v1/wosxpgxr0u76m)
 
-```
 
 This API is connected to a Google Sheet that acts as the database.  
 The Google Sheet link will be shared later for reference.
@@ -46,7 +44,6 @@ The project is fully static and can be deployed on GitHub Pages, Netlify, or any
 
 ## Project Structure
 
-```
 
 byamn-hackathons/
 │
@@ -63,7 +60,7 @@ byamn-hackathons/
 │
 └── README.md
 
-```
+
 
 ---
 
@@ -83,11 +80,9 @@ This page should:
   - Days left (calculated from deadline)
 
 Clicking a card should redirect to:
-```
 
 hackathon.html?slug=hackathon-slug
 
-```
 
 ---
 
@@ -156,4 +151,4 @@ The Discord invite link will be shared by the admin.
 ---
 
 **BYAMN – Learn. Build. Ship.**
-```
+
