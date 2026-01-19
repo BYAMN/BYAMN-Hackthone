@@ -1,36 +1,729 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover upcoming hackathons on BYAMN Hackathons platform">
-    <title>BYAMN Hackathons</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="description" content="Discover upcoming hackathons on BYAMN Hackathons platform">
+  <meta name="theme-color" content="#667eea" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="BYAMN Hackathons" />
+  <title>BYAMN Hackathons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <style>
+/* ===== RESET & BASE STYLES ===== */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ===== LAYOUT CONTAINERS ===== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== HEADER STYLES ===== */
+.main-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px 0;
+    text-align: center;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.main-header h1 {
+    font-size: 3em;
+    margin: 0;
+    font-weight: 700;
+}
+
+.main-header p {
+    font-size: 1.2em;
+    margin: 10px 0 0 0;
+    opacity: 0.9;
+}
+
+/* ===== FILTERS SECTION ===== */
+.hackathon-filters {
+    background: white;
+    padding: 30px;
+    margin: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+#searchInput {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 20px;
+    border: 2px solid #e1e5e9;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#sortSelect {
+    padding: 12px 20px;
+    border: 2px solid #e1e5e9;
+    border-radius: 25px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ===== HACKATHON LIST ===== */
+.hackathon-list {
+    margin-bottom: 50px;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.5em;
+    color: #666;
+    padding: 60px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.no-results {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+    padding: 60px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    grid-column: 1 / -1;
+}
+
+/* ===== HACKATHON CARDS GRID ===== */
+.hackathon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* ===== INDIVIDUAL HACKATHON CARD ===== */
+.hackathon-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 140px; /* Ensure good touch target */
+}
+
+.hackathon-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.hackathon-card:focus {
+    outline: 3px solid #667eea;
+    outline-offset: 2px;
+}
+
+.hackathon-card:active {
+    transform: scale(0.98);
+}
+
+/* Card content elements */
+.banner {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.content {
+    padding: 20px;
+}
+
+.title {
+    font-size: 1.4em;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: #333;
+    line-height: 1.3;
+}
+
+.organizer {
+    color: #666;
+    font-size: 0.95em;
+    margin: 0 0 15px 0;
+    font-weight: 400;
+}
+
+.prize {
+    font-weight: 700;
+    color: #28a745;
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tag {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+/* Days left indicator */
+.days-left {
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    font-size: 0.95em;
+}
+
+.days-left.warning {
+    background: linear-gradient(45deg, #ffc107, #ff8c00);
+    color: #000;
+}
+
+.days-left.danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .main-header {
+        padding: 30px 0;
+    }
+
+    .main-header h1 {
+        font-size: 2.2em;
+    }
+
+    .main-header p {
+        font-size: 0.95em;
+    }
+
+    .hackathon-filters {
+        padding: 20px;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    #searchInput {
+        padding: 14px 18px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        width: 100%;
+    }
+
+    #sortSelect {
+        padding: 14px 18px;
+        font-size: 16px;
+        width: 100%;
+        min-height: 48px; /* Better touch target */
+    }
+
+    .hackathon-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .hackathon-card {
+        min-height: 120px; /* Ensure good touch target */
+    }
+
+    .banner {
+        height: 180px;
+    }
+
+    .content {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 1.3em;
+        margin-bottom: 8px;
+    }
+
+    .organizer, .prize {
+        font-size: 0.9em;
+        margin-bottom: 12px;
+    }
+
+    .tags {
+        margin-bottom: 12px;
+    }
+
+    .tag {
+        font-size: 0.8em;
+        padding: 4px 10px;
+    }
+
+    .days-left {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+
+    footer {
+        padding: 15px;
+        margin-top: 30px;
+    }
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .hackathon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .main-header h1 {
+        font-size: 2.8em;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .main-header {
+        padding: 25px 0;
+    }
+
+    .main-header h1 {
+        font-size: 1.8em;
+        line-height: 1.2;
+    }
+
+    .main-header p {
+        font-size: 0.9em;
+        margin-top: 8px;
+    }
+
+    .hackathon-filters {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    #searchInput, #sortSelect {
+        padding: 12px 16px;
+    }
+
+    .hackathon-card {
+        border-radius: 12px;
+    }
+
+    .banner {
+        height: 160px;
+    }
+
+    .content {
+        padding: 14px;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .days-left {
+        font-size: 0.85em;
+        padding: 8px;
+    }
+
+    footer p {
+        font-size: 0.8em;
+    }
+}
+  </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <h1>BYAMN Hackathons</h1>
-            <p>Discover and join the latest hackathon events</p>
+  <header class="main-header">
+    <div class="container">
+      <h1>🚀 BYAMN Hackathons</h1>
+      <p>Discover and join the latest hackathon events</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hackathon-filters">
+      <input type="text" id="searchInput" placeholder="🔍 Search by name, organizer or tag..." />
+      <div class="filter-tags" id="filterTags"></div>
+      <select id="sortSelect">
+        <option value="deadline">Sort by Deadline</option>
+        <option value="title">Sort by Title</option>
+        <option value="prize">Sort by Prize</option>
+      </select>
+    </section>
+
+    <section class="hackathon-list" id="hackathons-grid">
+      <div class="loading" id="loading">⏳ Loading hackathons...</div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> BYAMN Hackathons. Built with ❤️ for innovators.</p>
+  </footer>
+
+  <script>
+/**
+ * BYAMN Hackathons - Main JavaScript
+ * Handles fetching, filtering, and displaying hackathon data
+ */
+
+// Configuration
+const API_ENDPOINT = 'https://sheetdb.io/api/v1/wosxpgxr0u76m';
+const USE_FALLBACK_ONLY = false; 
+
+// Global state
+let allHackathons = [];
+let filteredHackathons = [];
+
+/**
+ * Main initialization function
+ * Fetches hackathon data and sets up the page
+ */
+async function fetchHackathons() {
+    try {
+        if (USE_FALLBACK_ONLY) {
+            throw new Error('Using fallback data only (USE_FALLBACK_ONLY is true)');
+        }
+
+        const response = await fetch(API_ENDPOINT, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`API returned status ${response.status}`);
+        }
+
+        const data = await response.json();
+        allHackathons = Array.isArray(data) ? data : [];
+        console.log(`✅ Loaded ${allHackathons.length} hackathons from API`);
+
+    } catch (error) {
+        console.warn('⚠️ API fetch failed, using fallback data:', error.message);
+
+        // Fallback data for development/testing
+        allHackathons = [
+            {
+                "slug": "nash-knights",
+                "title": "Nash & Knights",
+                "organizer": "IIT Delhi",
+                "banner": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=200&fit=crop",
+                "prize": "₹50,000",
+                "tags": "Live,Strategy",
+                "deadline": "2026-01-20"
+            },
+            {
+                "slug": "code-fest-2026",
+                "title": "Code Fest 2026",
+                "organizer": "Tech University",
+                "banner": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=200&fit=crop",
+                "prize": "₹75,000",
+                "tags": "Online,Web Development",
+                "deadline": "2026-02-15"
+            },
+            {
+                "slug": "ai-hackathon",
+                "title": "AI Innovation Challenge",
+                "organizer": "AI Labs",
+                "banner": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&h=200&fit=crop",
+                "prize": "₹100,000",
+                "tags": "AI,Machine Learning",
+                "deadline": "2026-03-10"
+            },
+            {
+                "slug": "blockchain-build",
+                "title": "Blockchain Build Off",
+                "organizer": "Crypto Corp",
+                "banner": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=200&fit=crop",
+                "prize": "₹60,000",
+                "tags": "Blockchain,Crypto",
+                "deadline": "2026-01-30"
+            }
+        ];
+    }
+
+    // Initialize filtered list with all hackathons
+    filteredHackathons = [...allHackathons];
+
+    // Log initialization status
+    console.log(`🚀 Initialized with ${allHackathons.length} hackathons`);
+
+    // Display hackathons and set up filters
+    displayHackathons(filteredHackathons);
+    setupFilters();
+}
+
+/**
+ * Sets up search and filter functionality
+ */
+function setupFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+
+    // Add event listeners for real-time filtering
+    searchInput.addEventListener('input', filterHackathons);
+    sortSelect.addEventListener('change', sortHackathons);
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+}
+
+/**
+ * Filters hackathons based on search input
+ */
+function filterHackathons() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    if (!searchTerm) {
+        // No search term, show all hackathons
+        filteredHackathons = [...allHackathons];
+    } else {
+        // Filter by title, organizer, or tags
+        filteredHackathons = allHackathons.filter(hackathon => {
+            const title = hackathon.title.toLowerCase();
+            const organizer = hackathon.organizer.toLowerCase();
+            const tags = hackathon.tags.toLowerCase();
+
+            return title.includes(searchTerm) ||
+                   organizer.includes(searchTerm) ||
+                   tags.includes(searchTerm);
+        });
+    }
+
+    // Re-apply sorting after filtering
+    sortHackathons();
+}
+
+/**
+ * Sorts hackathons based on selected criteria
+ */
+function sortHackathons() {
+    const sortBy = document.getElementById('sortSelect').value;
+
+    filteredHackathons.sort((a, b) => {
+        switch (sortBy) {
+            case 'deadline':
+                // Sort by deadline (earliest first)
+                return new Date(a.deadline) - new Date(b.deadline);
+
+            case 'title':
+                // Sort alphabetically by title
+                return a.title.localeCompare(b.title);
+
+            case 'prize':
+                // Sort by prize amount (highest first)
+                const prizeA = parseInt(a.prize.replace(/[^\d]/g, '')) || 0;
+                const prizeB = parseInt(b.prize.replace(/[^\d]/g, '')) || 0;
+                return prizeB - prizeA;
+
+            default:
+                return 0;
+        }
+    });
+
+    // Re-display with new sorting
+    displayHackathons(filteredHackathons);
+}
+
+/**
+ * Renders hackathon cards to the page
+ */
+function displayHackathons(hackathons) {
+    const listContainer = document.getElementById('hackathons-grid');
+    const loading = document.getElementById('loading');
+
+    // Hide loading indicator
+    loading.style.display = 'none';
+
+    // Create grid container if it doesn't exist
+    let grid = listContainer.querySelector('.hackathon-grid');
+    if (!grid) {
+        grid = document.createElement('div');
+        grid.className = 'hackathon-grid';
+        listContainer.appendChild(grid);
+    }
+
+    // Clear existing cards
+    grid.innerHTML = '';
+
+    if (hackathons.length === 0) {
+        // No results found
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.textContent = 'No hackathons found matching your criteria.';
+        grid.appendChild(noResults);
+    } else {
+        // Create and append cards for each hackathon
+        hackathons.forEach(hackathon => {
+            const card = createHackathonCard(hackathon);
+            grid.appendChild(card);
+        });
+    }
+}
+
+/**
+ * Creates a hackathon card element
+ */
+function createHackathonCard(hackathon) {
+    // Extract and validate data
+    const title = hackathon.title || 'Untitled Hackathon';
+    const banner = hackathon.banner || 'https://via.placeholder.com/350x200?text=Hackathon';
+    const organizer = hackathon.organizer || 'Organizer';
+    const prize = hackathon.prize || '₹10,000';
+    const deadline = hackathon.deadline || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const slug = hackathon.slug || generateSlug(title);
+
+    // Parse tags
+    let tags = [];
+    if (hackathon.tags) {
+        if (typeof hackathon.tags === 'string') {
+            tags = hackathon.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+        } else if (Array.isArray(hackathon.tags)) {
+            tags = hackathon.tags;
+        }
+    }
+    if (tags.length === 0) tags = ['Hackathon'];
+
+    // Calculate days until deadline
+    const daysLeft = calculateDaysLeft(deadline);
+    const urgencyClass = daysLeft > 7 ? '' : daysLeft > 0 ? 'warning' : 'danger';
+
+    // Create card element
+    const card = document.createElement('div');
+    card.className = 'hackathon-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `View details for ${title} hackathon`);
+
+    // Navigation handler
+    const handleCardClick = () => {
+        // Prevent double-firing on touch devices
+        if (event && event.type === 'touchend') {
+            event.preventDefault();
+        }
+        // Navigate to detail page
+        window.location.href = `hackathon.html?slug=${slug}`;
+    };
+
+    // Add event listeners
+    card.addEventListener('click', handleCardClick);
+    card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick();
+        }
+    });
+
+    // Touch feedback for mobile
+    card.addEventListener('touchstart', () => {
+        card.style.transform = 'scale(0.98)';
+    });
+
+    card.addEventListener('touchend', () => {
+        card.style.transform = '';
+    });
+
+    // Build card HTML
+    card.innerHTML = `
+        <img src="${banner}" alt="${title} banner" class="banner"
+             onerror="this.src='https://via.placeholder.com/350x200/4a5568/ffffff?text=${encodeURIComponent(title)}'">
+        <div class="content">
+            <h3 class="title">${title}</h3>
+            <p class="organizer">by ${organizer}</p>
+            <p class="prize">Prize: ${prize}</p>
+            <div class="tags">
+                ${tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
         </div>
-    </header>
+        <div class="days-left ${urgencyClass}">
+            ${daysLeft > 0 ? `${daysLeft} days left` : 'Ended'}
+        </div>
+    `;
 
-    <main class="container">
-        <section class="hackathon-filters">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search hackathons...">
-            </div>
-            <div class="filter-tags">
-                <!-- Tags will be populated dynamically -->
-            </div>
-        </section>
+    return card;
+}
 
-        <section class="hackathon-list" id="hackathonList">
-            <!-- Hackathon cards will be populated dynamically -->
-            <div class="loading">Loading hackathons...</div>
-        </section>
-    </main>
+/**
+ * Calculates days remaining until deadline
+ */
+function calculateDaysLeft(deadlineStr) {
+    const deadline = new Date(deadlineStr + 'T23:59:59'); // End of deadline day
+    const now = new Date();
+    const diffTime = deadline - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    <script src="js/main.js"></script>
+    return Math.max(0, diffDays); // Never return negative
+}
+
+/**
+ * Generates URL-friendly slug from title
+ */
+function generateSlug(title) {
+    return title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
+        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', fetchHackathons);
+  </script>
 </body>
 </html>
